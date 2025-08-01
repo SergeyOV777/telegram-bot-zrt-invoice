@@ -1,0 +1,17 @@
+[Unit]
+Description=Telegram Invoice Bot
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/telegram_invoice_bot
+Environment=PATH=/root/telegram_invoice_bot/venv/bin
+ExecStart=/root/telegram_invoice_bot/venv/bin/python /root/telegram_invoice_bot/main.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target 

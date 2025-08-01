@@ -1,12 +1,12 @@
 import os
 from dotenv import load_dotenv
 
-# Загружаем переменные окружения из .env
 load_dotenv()
 
-BOT_TOKEN = os.getenv('BOT_TOKEN')
-GOOGLE_CREDENTIALS = os.getenv('GOOGLE_CREDENTIALS')
-SPREADSHEET_ID = os.getenv('SPREADSHEET_ID')
-SHEET_NAME = os.getenv('SHEET_NAME')
+BOT_TOKEN = "8099236215:AAEECv4myUVQDsVUEzK3mW3Pb1tDfrajLyM"
+GOOGLE_CREDENTIALS = os.getenv('GOOGLE_CREDENTIALS', 'test')
+SPREADSHEET_ID = "1d4_d6yhZPEPJ3JsqhxLMSZqNnJeITqO3vF7im1hX1EY"
+SHEET_NAME = "Все неоплаченные счета клиентов"
+CLIENTS_SHEET_NAME = "Clients"  # Попробуем английское название
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
+SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE', 'service_account.json')

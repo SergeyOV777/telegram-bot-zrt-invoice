@@ -22,14 +22,8 @@ def format_invoice_block(client_name: str, records):
         work = row.get('Работа', '—')
         work_sum = row.get('Сумма работа', '0')
         part_sum = row.get('Сумма запчасть', '0')
-        try:
-            work_sum_int = int(str(work_sum).replace(' ', '').replace('₽', '')) if work_sum else 0
-        except Exception:
-            work_sum_int = 0
-        try:
-            part_sum_int = int(str(part_sum).replace(' ', '').replace('₽', '')) if part_sum else 0
-        except Exception:
-            part_sum_int = 0
+        work_sum_int = parse_money(str(work_sum))
+        part_sum_int = parse_money(str(part_sum))
         amount = work_sum_int + part_sum_int
         total += amount
         parts = []

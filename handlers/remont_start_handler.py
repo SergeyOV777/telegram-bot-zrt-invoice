@@ -4,6 +4,7 @@ from services.sheets_service import get_all_invoices
 
 def remont_start_handler(update: Update, context: CallbackContext):
     invoices = get_all_invoices()
+    print("DEBUG invoices:", invoices)  # Отладочный вывод
     clients = sorted({inv.get('Клиент', '').strip() for inv in invoices if inv.get('Клиент')})
     if not clients:
         text = "Нет доступных клиентов."

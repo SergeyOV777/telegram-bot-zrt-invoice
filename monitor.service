@@ -1,0 +1,18 @@
+[Unit]
+Description=Telegram Bot Monitor
+After=network.target bot.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/telegram_invoice_bot
+Environment=PATH=/root/telegram_invoice_bot/venv/bin
+Environment=BOT_TOKEN=your_bot_token_here
+ExecStart=/root/telegram_invoice_bot/venv/bin/python /root/telegram_invoice_bot/monitoring.py
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target 

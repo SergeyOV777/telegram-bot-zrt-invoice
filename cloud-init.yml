@@ -1,0 +1,201 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - python3
+  - python3-pip
+  - python3-venv
+  - git
+  - curl
+  - wget
+  - ufw
+  - htop
+  - nano
+  - tree
+
+users:
+  - name: botuser
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCz6l7Vtb14YGfsf+ssh1VDyHsVtemcCfP4J8obVJY7Abmnn0pQje7C3JIIF8LEMTUNXMaLJDFqTA4XCjKS+d+hq443zyKUiQ2YYEgpQvUzFcAXjOXZQw+kI7Tvdpujk69SoubZMOccepDSWofDz54Koddvci8HS0EbpieJKjJ4fKOhxuOLOE0w7c5hEF6X9cdEH1GrGux47eTvfyym6oUKz8JibTQA5rHN9CDoM75CSvIcBDONotl8hmG1OrCw7ECuh72CBg5/xBl5IsmAifPbgVEroFoYK6qqhmFfJU2mqeQfcSXb5T1oYdzAujp955k/sMC1TWIekFLkXFcbdpWF sergeyobraztsovk@gmail.com
+
+write_files:
+  - path: /root/telegram_invoice_bot/requirements.txt
+    content: |
+      python-telegram-bot==13.15
+      google-api-python-client==2.56.0
+      google-auth-httplib2==0.1.0
+      google-auth-oauthlib==1.0.0
+      python-dotenv==1.0.0
+      requests==2.31.0
+
+  - path: /root/telegram_invoice_bot/bot.service
+    content: |
+      [Unit]
+      Description=Telegram Invoice Bot
+      After=network.target
+
+      [Service]
+      Type=simple
+      User=root
+      WorkingDirectory=/root/telegram_invoice_bot
+      Environment=PATH=/root/telegram_invoice_bot/venv/bin
+      ExecStart=/root/telegram_invoice_bot/venv/bin/python /root/telegram_invoice_bot/main.py
+      Restart=always
+      RestartSec=10
+      StandardOutput=journal
+      StandardError=journal
+
+      [Install]
+      WantedBy=multi-user.target
+
+  - path: /root/telegram_invoice_bot/monitor.service
+    content: |
+      [Unit]
+      Description=Telegram Bot Monitor
+      After=network.target bot.service
+
+      [Service]
+      Type=simple
+      User=root
+      WorkingDirectory=/root/telegram_invoice_bot
+      Environment=PATH=/root/telegram_invoice_bot/venv/bin
+      Environment=BOT_TOKEN=your_bot_token_here
+      ExecStart=/root/telegram_invoice_bot/venv/bin/python /root/telegram_invoice_bot/monitoring.py
+      Restart=always
+      RestartSec=30
+      StandardOutput=journal
+      StandardError=journal
+
+      [Install]
+      WantedBy=multi-user.target
+
+  - path: /root/telegram_invoice_bot/manage.sh
+    content: |
+      #!/bin/bash
+      BOT_NAME="bot"
+      case "$1" in
+          start)
+              echo "🚀 Запускаем бота..."
+              systemctl start $BOT_NAME
+              systemctl status $BOT_NAME
+              ;;
+          stop)
+              echo "⏹️ Останавливаем бота..."
+              systemctl stop $BOT_NAME
+              ;;
+          restart)
+              echo "🔄 Перезапускаем бота..."
+              systemctl restart $BOT_NAME
+              systemctl status $BOT_NAME
+              ;;
+          status)
+              echo "📊 Статус бота:"
+              systemctl status $BOT_NAME
+              ;;
+          logs)
+              echo "📝 Логи бота (Ctrl+C для выхода):"
+              journalctl -u $BOT_NAME -f
+              ;;
+          logs-all)
+              echo "📝 Все логи бота:"
+              journalctl -u $BOT_NAME
+              ;;
+          enable)
+              echo "✅ Включаем автозапуск бота..."
+              systemctl enable $BOT_NAME
+              ;;
+          disable)
+              echo "❌ Отключаем автозапуск бота..."
+              systemctl disable $BOT_NAME
+              ;;
+          update)
+              echo "🔄 Обновляем бота..."
+              cd /root/telegram_invoice_bot
+              git pull
+              source venv/bin/activate
+              pip install -r requirements.txt
+              systemctl restart $BOT_NAME
+              echo "✅ Обновление завершено!"
+              ;;
+          *)
+              echo "📋 Использование: $0 {start|stop|restart|status|logs|logs-all|enable|disable|update}"
+              exit 1
+              ;;
+      esac
+
+  - path: /root/telegram_invoice_bot/setup.sh
+    content: |
+      #!/bin/bash
+      echo "🚀 Настройка Telegram бота..."
+      
+      # Создаем директорию
+      mkdir -p /root/telegram_invoice_bot
+      cd /root/telegram_invoice_bot
+      
+      # Создаем виртуальное окружение
+      echo "🔧 Создаем виртуальное окружение..."
+      python3 -m venv venv
+      source venv/bin/activate
+      
+      # Устанавливаем зависимости
+      echo "📚 Устанавливаем зависимости..."
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      
+      # Создаем .env файл
+      echo "⚙️ Создаем конфигурационный файл..."
+      cat > .env << EOF
+      # Telegram Bot Token
+      BOT_TOKEN=your_bot_token_here
+      
+      # Google Sheets API
+      GOOGLE_CREDENTIALS=your_google_credentials_here
+      SPREADSHEET_ID=your_spreadsheet_id_here
+      SHEET_NAME=your_sheet_name_here
+      SERVICE_ACCOUNT_FILE=service_account.json
+      EOF
+      
+      # Копируем systemd службы
+      echo "🔧 Настраиваем systemd службы..."
+      cp bot.service /etc/systemd/system/
+      cp monitor.service /etc/systemd/system/
+      systemctl daemon-reload
+      
+      # Устанавливаем права
+      chmod +x manage.sh
+      chmod +x setup.sh
+      
+      echo "✅ Настройка завершена!"
+      echo "📋 Следующие шаги:"
+      echo "1. Отредактируйте файл .env: nano /root/telegram_invoice_bot/.env"
+      echo "2. Запустите бота: ./manage.sh start"
+      echo "3. Включите автозапуск: ./manage.sh enable"
+
+runcmd:
+  # Настройка firewall
+  - ufw allow ssh
+  - ufw allow 80/tcp
+  - ufw allow 443/tcp
+  - ufw --force enable
+  
+  # Создание директории и настройка
+  - mkdir -p /root/telegram_invoice_bot
+  - cd /root/telegram_invoice_bot
+  - chmod +x setup.sh
+  - ./setup.sh
+  
+  # Настройка мониторинга
+  - echo "*/5 * * * * /root/telegram_invoice_bot/venv/bin/python /root/telegram_invoice_bot/monitoring.py" | crontab -
+  
+  # Создание лог файлов
+  - touch /var/log/bot.log
+  - touch /var/log/bot_monitor.log
+  - chmod 644 /var/log/bot.log
+  - chmod 644 /var/log/bot_monitor.log
+  
+  # Финальное сообщение
+  - echo "🎉 Сервер настроен! Telegram бот готов к работе."
+  - echo "📝 Не забудьте отредактировать файл .env с вашими токенами!" 

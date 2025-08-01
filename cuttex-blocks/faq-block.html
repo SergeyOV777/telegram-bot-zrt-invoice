@@ -1,0 +1,240 @@
+<!-- Блок FAQ для Tilda -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;500;600;700&display=swap');
+
+.cuttex-faq {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.cuttex-faq-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.cuttex-faq h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 50px;
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.cuttex-faq-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.cuttex-faq-item {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #dc3545;
+    cursor: pointer;
+}
+
+.cuttex-faq-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.cuttex-faq-item.active {
+    border-left-color: #c82333;
+}
+
+.cuttex-faq-item h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0;
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.cuttex-faq-question {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cuttex-faq-question::before {
+    content: '?';
+    background-color: #dc3545;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease;
+}
+
+.cuttex-faq-item.active .cuttex-faq-question::before {
+    background-color: #c82333;
+}
+
+.cuttex-faq-arrow {
+    color: #dc3545;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.cuttex-faq-item.active .cuttex-faq-arrow {
+    transform: rotate(180deg);
+    color: #c82333;
+}
+
+.cuttex-faq-answer {
+    color: #666;
+    line-height: 1.6;
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, margin-top 0.3s ease, opacity 0.3s ease;
+}
+
+.cuttex-faq-item.active .cuttex-faq-answer {
+    margin-top: 20px;
+    max-height: 500px;
+    opacity: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .cuttex-faq {
+        padding: 60px 0;
+    }
+    
+    .cuttex-faq h2 {
+        font-size: 2rem;
+    }
+    
+    .cuttex-faq-item {
+        padding: 25px 20px;
+    }
+    
+    .cuttex-faq-item h3 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cuttex-faq h2 {
+        font-size: 1.8rem;
+    }
+    
+    .cuttex-faq-item h3 {
+        font-size: 1.1rem;
+    }
+}
+</style>
+
+<section class="cuttex-faq">
+    <div class="cuttex-faq-container">
+        <h2>Часто задаваемые вопросы</h2>
+        <div class="cuttex-faq-list">
+            <div class="cuttex-faq-item">
+                <h3>
+                    <div class="cuttex-faq-question">Сколько стоит выезд и консультация дизайнера?</div>
+                    <div class="cuttex-faq-arrow">▼</div>
+                </h3>
+                <div class="cuttex-faq-answer">
+                    Дизайнер приедет на объект совершенно бесплатно, даже если вы в будущем не будете делать заказ. Наш сотрудник привезет с собой большое количество образцов тканей, подходящих под ваш интерьер.
+                </div>
+            </div>
+            <div class="cuttex-faq-item">
+                <h3>
+                    <div class="cuttex-faq-question">В чем преимущество выезда дизайнера на объект?</div>
+                    <div class="cuttex-faq-arrow">▼</div>
+                </h3>
+                <div class="cuttex-faq-answer">
+                    Не нужно посещать салон, тем самым вы экономите свое время. Выбирать ткани в интерьере, в котором будут висеть штор - лучше, чем в салоне. При выезде дизайнер возьмет с собой каталоги с тканями, ориентируясь на ваш интерьер и предпочтения.
+                </div>
+            </div>
+            <div class="cuttex-faq-item">
+                <h3>
+                    <div class="cuttex-faq-question">Как долго шьют шторы и изготавливают карнизы?</div>
+                    <div class="cuttex-faq-arrow">▼</div>
+                </h3>
+                <div class="cuttex-faq-answer">
+                    Сшить шторы и произвести карнизы на одно окно - около 3 дней. Оформить полностью трехкомнатную квартиру с монтажом карнизов и навеской штор - от 10 до 14 дней.
+                </div>
+            </div>
+            <div class="cuttex-faq-item">
+                <h3>
+                    <div class="cuttex-faq-question">Где можно посмотреть каталоги тканей?</div>
+                    <div class="cuttex-faq-arrow">▼</div>
+                </h3>
+                <div class="cuttex-faq-answer">
+                    У нас более 10000 артикулов тканей на складе в Москве. Ткани можно выбрать при встрече с дизайнером на объекте.
+                </div>
+            </div>
+            <div class="cuttex-faq-item">
+                <h3>
+                    <div class="cuttex-faq-question">Как происходит оплата и заключение договора?</div>
+                    <div class="cuttex-faq-arrow">▼</div>
+                </h3>
+                <div class="cuttex-faq-answer">
+                    После первой встречи с дизайнером на объекте, согласуем материалы и смету. Далее заключаем договор на оказание услуг, указывая сроки и все примечания. Вносится предоплата в размере от 50% до 75% от стоимости заказа. Вторая часть оплачивается после сдачи проекта.
+                </div>
+            </div>
+            <div class="cuttex-faq-item">
+                <h3>
+                    <div class="cuttex-faq-question">Можно ли предварительно увидеть дизайн штор?</div>
+                    <div class="cuttex-faq-arrow">▼</div>
+                </h3>
+                <div class="cuttex-faq-answer">
+                    Наш дизайнер проконсультирует в выборе тканей и фасоне штор. Перед началом пошива разработаем эскизы и сделаем визуализацию будущего текстильного оформления вашего дома.
+                </div>
+            </div>
+            <div class="cuttex-faq-item">
+                <h3>
+                    <div class="cuttex-faq-question">Есть ли у вас готовые шторы или текстильные изделия?</div>
+                    <div class="cuttex-faq-arrow">▼</div>
+                </h3>
+                <div class="cuttex-faq-answer">
+                    В данный момент у нас можно заказать шторы и домашний текстиль только по индивидуальным размерам. Вы можете выбрать любую ткань и фурнитуру по типу и качеству. Но в ближайшем будущем мы планируем выпустить коллекцию постельного белья и текстильных изделий для дома.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.cuttex-faq-item');
+    
+    faqItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const isActive = this.classList.contains('active');
+            
+            // Закрываем все остальные элементы
+            faqItems.forEach(faqItem => {
+                if (faqItem !== this) {
+                faqItem.classList.remove('active');
+                }
+            });
+            
+            // Переключаем состояние текущего элемента
+            this.classList.toggle('active');
+        });
+    });
+});
+</script> 
